@@ -79,10 +79,10 @@ const GroupView: FC = () => {
         <Grid item xs={false} lg={false} xl={1} />         
         <Grid item container alignItems="center" xs={10} lg={4} xl={4}>
           { data && data.info && !isLoading && !error && (
-            <InfoBox 
-              data={data.info.reduce((dataObj: any, animal: any) =>  ({...dataObj, [animal.animalid]: animal.name}), {})}
-              hiddenKeys={data.info.map((animal: any) => animal.animalid).filter((animal: any, index: number) => index > 1)}
-            />
+          <InfoBox 
+            data={data.info.reduce((dataObj: any, animal: any) =>  ({...dataObj, [animal.animalid]: animal.name}), {})}
+            hiddenKeys={data.info.map((animal: any) => animal.animalid).filter((animal: any, index: number) => index > 1)}
+          />
           )}
         </Grid>
       </Grid>
@@ -98,34 +98,34 @@ const GroupView: FC = () => {
         >
           <ChartItem 
             title={intl.formatMessage({
-              description: "Weight Chart title", 
-              defaultMessage: "Weight"
+              description: "Average Weight Chart title", 
+              defaultMessage: "Average Weight"
             })}
             chartData={[{id: "weight", data: data?.weight}]} 
             xKey="timestamp" 
             yKey="weight" 
             yLegend={intl.formatMessage({
-              description: "Weight in kg label", 
+              description: "Average Weight in kg label", 
               defaultMessage: "weight (kg)"
             })}
           />
           <ChartItem 
             title={intl.formatMessage({
-              description: "Total milk title", 
-              defaultMessage: "Total Milk"
+              description: "Average milk title", 
+              defaultMessage: "Average Milk"
             })}
             chartData={[{id: "milk", data: data?.milk}]} 
             xKey="timestamp" 
             yKey="totalweight" 
             yLegend={intl.formatMessage({
-              description: "Total milk in kg label", 
-              defaultMessage: "total milk (kg)"
+              description: "Average milk in kg label", 
+              defaultMessage: "milk (kg)"
             })}
           />
           <ChartItem 
             title={intl.formatMessage({
               description: "Feed Consumption Chart title", 
-              defaultMessage: "Feed Consumption"
+              defaultMessage: "Average Feed Consumption"
             })}
             chartData={[{id: "insentec", data: data?.insentec}, {id: "robot", data: data?.robot}]} 
             xKey="timestamp" 
@@ -137,14 +137,14 @@ const GroupView: FC = () => {
           />
           <ChartItem 
             title={intl.formatMessage({
-                description: "Feeding duration title", 
-                defaultMessage: "Feeding Duration"
+                description: "Average Feeding duration title", 
+                defaultMessage: "Average Feeding Duration"
             })}
             chartData={[{id: "milk", data: data?.milk}]} 
             xKey="timestamp" 
             yKey="totalweight" 
             yLegend={intl.formatMessage({
-              description: "Total feeding duration in minutes label", 
+              description: "Average feeding duration in minutes label", 
               defaultMessage: "duration (min)"
             })}
           />

@@ -1,6 +1,7 @@
 import { FarmItem } from './types';
 
 export const MAIN_BASIC_INFO_KEYS: Array<string> = ["animalid", "name"];
+
 export const FARM_OPTIONS: Array<FarmItem> = [
   {
     id: "1",
