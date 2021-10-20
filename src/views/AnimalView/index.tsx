@@ -16,6 +16,7 @@ import { ReactComponent as CowIcon } from '../../assets/icons/cow.svg';
 import { MAIN_BASIC_INFO_KEYS } from '../../utils/constants';
 import { useAnimalData } from '../../hooks';
 import SearchForm from './SearchForm';
+import { xKeyObj } from '../../utils/types';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -46,6 +47,15 @@ const AnimalView: FC = () => {
   useEffect(() => {
     if(error) setShowError(true);
   }, [error]);
+
+  const chartXKeys: Array<xKeyObj> = [
+    {
+      key: "timestamp",
+      type: "time",
+      plot: "line",
+      legend: intl.formatMessage({description: "Timestamp axis legend", defaultMessage: "day"})
+    }
+  ];
  
   return (
     <ContentContainer>
@@ -103,7 +113,7 @@ const AnimalView: FC = () => {
               defaultMessage: "Weight"
             })}
             chartData={[{id: "weight", data: data?.weight}]} 
-            xKey="timestamp" 
+            xKeys={chartXKeys}
             yKey="weight" 
             yLegend={intl.formatMessage({
               description: "Weight in kg label", 
@@ -116,7 +126,7 @@ const AnimalView: FC = () => {
               defaultMessage: "Total Milk"
             })}
             chartData={[{id: "milk", data: data?.milk}]} 
-            xKey="timestamp" 
+            xKeys={chartXKeys}
             yKey="totalweight" 
             yLegend={intl.formatMessage({
               description: "Total milk in kg label", 
@@ -129,7 +139,7 @@ const AnimalView: FC = () => {
               defaultMessage: "Feed Consumption"
             })}
             chartData={[{id: "insentec", data: data?.insentec}, {id: "robot", data: data?.robot}]} 
-            xKey="timestamp" 
+            xKeys={chartXKeys}
             yKey="value" 
             yLegend={intl.formatMessage({
               description: "Consumption in kg label", 
@@ -142,7 +152,7 @@ const AnimalView: FC = () => {
                 defaultMessage: "Feeding Duration"
             })}
             chartData={[{id: "milk", data: data?.milk}]} 
-            xKey="timestamp" 
+            xKeys={chartXKeys}
             yKey="totalweight" 
             yLegend={intl.formatMessage({
               description: "Total feeding duration in minutes label", 

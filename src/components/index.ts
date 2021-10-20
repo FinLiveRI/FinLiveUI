@@ -5,5 +5,6 @@ export { default as DateRangePicker } from './DateRangePicker/DateRangePicker';
 export { default as ErrorSnack} from './ErrorSnack/ErrorSnack';
 export { default as InfoBox } from './InfoBox/InfoBox';
 export { default as LineChart } from './LineChart/LineChart';
+export { default as ScatterChart } from './ScatterChart/ScatterChart';
 export { default as Spinner } from './Spinner/Spinner';
 export { default as ViewHeader } from './ViewHeader/ViewHeader';

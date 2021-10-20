@@ -1,41 +1,40 @@
 import { FC } from 'react';
-import { ResponsiveLine } from '@nivo/line'
+import { ResponsiveScatterPlot} from '@nivo/scatterplot';
 
-type LineChartDataPoint = {
+type ScatterChartDataPoint = {
   x: string | number | Date,
-  y: string | number | null,
+  y: string | number | Date,
   [key: string]: any
 }
 
-type LineChartSeries = {
-  id: string,
-  data: Array<LineChartDataPoint>
+type ScatterChartSeries = {
+  id: string | number,
+  data: Array<ScatterChartDataPoint>
 }
 
-type LineChartProps = {
-  data: Array<LineChartSeries>,
+type ScatterChartProps = {
+  data: Array<ScatterChartSeries>,
   xScaleType: "time" | "linear",
   yLegend?: string,
   xLegend?: string
 }
 
-const LineChart: FC<LineChartProps> = (props: LineChartProps) => {
+const ScatterChart: FC<ScatterChartProps> = (props: ScatterChartProps) => {
   const showLegend: boolean = props.data && props.data.length > 1;
-  
+  console.log(props.data)
   return (
-    <ResponsiveLine
+    <ResponsiveScatterPlot
       data={props.data}
       margin={{ top: 50, right: 30, bottom: 50, left: 60 }}
       xScale={{  
         type: props.xScaleType,
-        format: '%Y-%m-%d',
+        format: props.xScaleType === "time" ? '%Y-%m-%d' : undefined,
         useUTC: true,
         precision: 'day',
       }}
       yScale={{ type: 'linear', stacked: false, min: 'auto', max: 'auto'}}
-      xFormat="time:%Y-%m-%d"
+      xFormat={props.xScaleType === "time" ? "time:%Y-%m-%d" : undefined}
       yFormat=" >-.2f"
-      curve="linear"
       axisTop={null}
       axisBottom={{
         format: props.xScaleType === "time" ? '%b %d' : undefined,
@@ -57,13 +56,8 @@ const LineChart: FC<LineChartProps> = (props: LineChartProps) => {
         legendPosition: 'middle',
       }}
       colors={{ scheme: 'category10' }}
-      lineWidth={2}
-      pointSize={5}
-      pointColor={{ theme: 'background' }}
-      pointBorderWidth={2}
-      pointBorderColor={{ from: 'serieColor' }}
-      pointLabelYOffset={-12}
       useMesh={true}
+      isInteractive={true}
       enableGridY
       enableGridX
       legends={showLegend ? [
@@ -96,4 +90,4 @@ const LineChart: FC<LineChartProps> = (props: LineChartProps) => {
   );
 }
 
-export default LineChart;
+export default ScatterChart;

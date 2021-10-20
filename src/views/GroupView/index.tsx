@@ -15,6 +15,7 @@ import {
 import { useGroupData } from '../../hooks';
 import { ReactComponent as GroupIcon } from '../../assets/icons/group.svg';
 import GroupSearchForm from './GroupSearchForm';
+import { xKeyObj } from '../../utils/types';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -45,6 +46,21 @@ const GroupView: FC = () => {
   useEffect(() => {
     if(error) setShowError(true);
   }, [error]);
+
+  const chartXKeys: Array<xKeyObj> = [
+    {
+      key: "timestamp",
+      type: "time",
+      plot: "line",
+      legend: intl.formatMessage({description: "Timestamp axis legend", defaultMessage: "day"})
+    },
+    {
+      key: "lactation_period",
+      type: "linear",
+      plot: "scatter",
+      legend: intl.formatMessage({description: "Timestamp axis legend", defaultMessage: "day"})
+    },
+  ];
 
   return (
     <ContentContainer>
@@ -102,7 +118,7 @@ const GroupView: FC = () => {
               defaultMessage: "Average Weight"
             })}
             chartData={[{id: "weight", data: data?.weight}]} 
-            xKey="timestamp" 
+            xKeys={chartXKeys}
             yKey="weight" 
             yLegend={intl.formatMessage({
               description: "Average Weight in kg label", 
@@ -115,7 +131,7 @@ const GroupView: FC = () => {
               defaultMessage: "Average Milk"
             })}
             chartData={[{id: "milk", data: data?.milk}]} 
-            xKey="timestamp" 
+            xKeys={chartXKeys}
             yKey="totalweight" 
             yLegend={intl.formatMessage({
               description: "Average milk in kg label", 
@@ -128,7 +144,7 @@ const GroupView: FC = () => {
               defaultMessage: "Average Feed Consumption"
             })}
             chartData={[{id: "insentec", data: data?.insentec}, {id: "robot", data: data?.robot}]} 
-            xKey="timestamp" 
+            xKeys={chartXKeys}
             yKey="value" 
             yLegend={intl.formatMessage({
               description: "Consumption in kg label", 
@@ -141,7 +157,7 @@ const GroupView: FC = () => {
                 defaultMessage: "Average Feeding Duration"
             })}
             chartData={[{id: "milk", data: data?.milk}]} 
-            xKey="timestamp" 
+            xKeys={chartXKeys}
             yKey="totalweight" 
             yLegend={intl.formatMessage({
               description: "Average feeding duration in minutes label", 
