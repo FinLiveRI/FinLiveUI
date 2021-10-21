@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { ResponsiveScatterPlot} from '@nivo/scatterplot';
+import { Theme } from '@nivo/core';
 
 type ScatterChartDataPoint = {
   x: string | number | Date,
@@ -19,6 +20,18 @@ type ScatterChartProps = {
   xLegend?: string
 }
 
+const theme: Theme = {
+  axis: {
+    legend: {
+      text: {
+        fill: "#707070",
+        fontSize: "0.95em",
+        fontWeight: 600
+      }
+    }
+  },
+};
+
 const ScatterChart: FC<ScatterChartProps> = (props: ScatterChartProps) => {
   const showLegend: boolean = props.data && props.data.length > 1;
   console.log(props.data)
@@ -36,6 +49,7 @@ const ScatterChart: FC<ScatterChartProps> = (props: ScatterChartProps) => {
       xFormat={props.xScaleType === "time" ? "time:%Y-%m-%d" : undefined}
       yFormat=" >-.2f"
       axisTop={null}
+      theme={theme}
       axisBottom={{
         format: props.xScaleType === "time" ? '%b %d' : undefined,
         tickSize: 5,

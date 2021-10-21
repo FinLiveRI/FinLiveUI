@@ -1,5 +1,7 @@
 import { FC } from 'react';
 import { ResponsiveLine } from '@nivo/line'
+import { Theme } from '@nivo/core';
+
 
 type LineChartDataPoint = {
   x: string | number | Date,
@@ -18,6 +20,18 @@ type LineChartProps = {
   yLegend?: string,
   xLegend?: string
 }
+
+const theme: Theme = {
+  axis: {
+    legend: {
+      text: {
+        fill: "#707070",
+        fontSize: "0.95em",
+        fontWeight: 600
+      }
+    }
+  },
+};
 
 const LineChart: FC<LineChartProps> = (props: LineChartProps) => {
   const showLegend: boolean = props.data && props.data.length > 1;
@@ -57,6 +71,7 @@ const LineChart: FC<LineChartProps> = (props: LineChartProps) => {
         legendPosition: 'middle',
       }}
       colors={{ scheme: 'category10' }}
+      theme={theme}
       lineWidth={2}
       pointSize={5}
       pointColor={{ theme: 'background' }}
