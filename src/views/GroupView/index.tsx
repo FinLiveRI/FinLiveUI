@@ -2,6 +2,7 @@ import { useState, useEffect, FC} from 'react';
 import { useIntl } from 'react-intl';
 import {
   Grid,
+  Divider
 } from '@material-ui/core';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { 
@@ -31,6 +32,9 @@ const useStyles = makeStyles(() =>
       minWidth: "30vw", 
       minHeight: "30vh", 
       marginTop: "20vh", 
+    },
+    divider: {
+      width: "100%"
     }
   })
 );
@@ -102,6 +106,7 @@ const GroupView: FC = () => {
           )}
         </Grid>
       </Grid>
+      <Divider variant="fullWidth" className={classes.divider} />
       { data && !isLoading && !error && (
         <Grid 
           item 
