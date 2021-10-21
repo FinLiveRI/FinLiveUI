@@ -161,7 +161,7 @@ const GroupView: FC = () => {
                 description: "Average Feeding duration title", 
                 defaultMessage: "Average Feeding Duration"
             })}
-            chartData={[{id: "milk", data: data?.milk}]} 
+            chartData={[{id: "feeding duration", data: data?.milk}]} 
             xKeys={chartXKeys}
             yKey="totalweight" 
             yLegend={intl.formatMessage({

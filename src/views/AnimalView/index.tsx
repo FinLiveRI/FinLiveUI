@@ -156,7 +156,7 @@ const AnimalView: FC = () => {
                 description: "Feeding duration title", 
                 defaultMessage: "Feeding Duration"
             })}
-            chartData={[{id: "milk", data: data?.milk}]} 
+            chartData={[{id: "feeding duration", data: data?.milk}]} 
             xKeys={chartXKeys}
             yKey="totalweight" 
             yLegend={intl.formatMessage({
