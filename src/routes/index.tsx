@@ -1,5 +1,5 @@
 import { Switch, Redirect, Route } from 'react-router-dom';
-import { AnimalView, GroupView, LoginView } from '../views';
+import { AnimalView, GroupView, LoginView, DataUploadView } from '../views';
 import PrivateRoute from './PrivateRoute';
 
 const Routes = () => (
@@ -13,6 +13,9 @@ const Routes = () => (
     </PrivateRoute>
     <PrivateRoute path="/group">
       <GroupView />
+    </PrivateRoute>
+    <PrivateRoute path="/upload">
+      <DataUploadView />
     </PrivateRoute>
     <Redirect from="*" to="/" />
   </Switch>
