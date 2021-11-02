@@ -14,7 +14,6 @@ type KeySelectionProps = {
 }
 
 const KeySelection: FC<KeySelectionProps> = (props: KeySelectionProps) => {
-
   const handleChange = (event: ChangeEvent<{value: unknown}>) => props.onChange(event.target.value as string);
 
   if(!props.keys.includes(props.value)) return null;

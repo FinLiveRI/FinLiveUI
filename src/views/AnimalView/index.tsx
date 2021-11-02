@@ -58,7 +58,13 @@ const AnimalView: FC = () => {
       type: "time",
       plot: "line",
       legend: intl.formatMessage({description: "Timestamp axis legend", defaultMessage: "day"})
-    }
+    },
+    {
+      key: "lactation_period",
+      type: "linear",
+      plot: "scatter",
+      legend: intl.formatMessage({description: "Timestamp axis legend", defaultMessage: "day"})
+    },
   ];
  
   return (

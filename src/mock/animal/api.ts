@@ -25,8 +25,19 @@ const mockGetAnimal= async(query: any) => {
     animal_data.milk= animal_data?.milk.filter((obj: any) => moment(obj.timestamp.substring(0,10)).isSameOrBefore(moment(query.endDate)));
   }
 
-  const insentec = animal_data.feed.map((obj: any) => ({timestamp: obj.timestamp, value: obj.value - Math.floor(Math.random() * 30)}));
-  const robot = animal_data.feed.map((obj: any) => ({timestamp: obj.timestamp, value: obj.value - Math.floor(Math.random() * 10)}));
+  animal_data.weight = animal_data.weight.map((obj: any) => ({...obj, lactation_period: moment(obj.timestamp).format("D")}));
+  animal_data.milk = animal_data.milk.map((obj: any) => ({...obj, lactation_period: moment(obj.timestamp).format("D")}));
+  const insentec = animal_data.feed.map((obj: any) => ({
+    timestamp: obj.timestamp, 
+    value: obj.value - Math.floor(Math.random() * 30),
+    lactation_period: moment(obj.timestamp).format("D")
+  }));
+
+  const robot = animal_data.feed.map((obj: any) => ({
+    timestamp: obj.timestamp, 
+    value: obj.value - Math.floor(Math.random() * 10),
+    lactation_period: moment(obj.timestamp).format("D")
+  }));
   animal_data.insentec = insentec;
   animal_data.robot = robot;
   

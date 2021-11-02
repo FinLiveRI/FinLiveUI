@@ -16,7 +16,7 @@ type LineChartSeries = {
 
 type LineChartProps = {
   data: Array<LineChartSeries>,
-  xScaleType: "time" | "linear",
+  xScaleType: "time" | "week",
   yLegend?: string,
   xLegend?: string
 }
@@ -33,26 +33,30 @@ const theme: Theme = {
   },
 };
 
+
 const LineChart: FC<LineChartProps> = (props: LineChartProps) => {
   const showLegend: boolean = props.data && props.data.length > 1;
-  
+
+  const xScale: any = {
+    type: 'time',
+    format: '%Y-%m-%d',
+    useUTC: true,
+    precision: 'day',
+  }
+ 
   return (
     <ResponsiveLine
       data={props.data}
       margin={{ top: 50, right: 30, bottom: 50, left: 60 }}
-      xScale={{  
-        type: props.xScaleType,
-        format: '%Y-%m-%d',
-        useUTC: true,
-        precision: 'day',
-      }}
+      xScale={xScale}
+      animate={false}
       yScale={{ type: 'linear', stacked: false, min: 'auto', max: 'auto'}}
-      xFormat="time:%Y-%m-%d"
+      xFormat={props.xScaleType === "time" ? "time:%Y-%m-%d" : "time:%W-%Y"}
       yFormat=" >-.2f"
       curve="linear"
       axisTop={null}
       axisBottom={{
-        format: props.xScaleType === "time" ? '%b %d' : undefined,
+        format: props.xScaleType === "time" ? '%b %d' : '%W-%Y',
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
