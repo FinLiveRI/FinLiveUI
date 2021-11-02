@@ -10,22 +10,25 @@ import {
 } from "react-router-dom";
 import theme from './theme';
 import { AppBar } from './components';
-import { AuthProvider } from './context';
+import { AuthProvider, UserConfigProvider } from './context';
 import Routes from './routes';
 
 function App() {
   const user: string | null = localStorage.getItem('user');
+  const config: any | null = JSON.parse(localStorage.getItem('userConfig') || "{}");
 
   return (
     <ThemeProvider theme={theme}>
       <IntlProvider locale="en" defaultLocale="en">
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <AuthProvider user={user}>
-            <BrowserRouter>
-              <CssBaseline />
-              <AppBar />
-              <Routes />
-            </BrowserRouter>
+            <UserConfigProvider config={config}>
+              <BrowserRouter>
+                <CssBaseline />
+                <AppBar />
+                <Routes />
+              </BrowserRouter>
+            </UserConfigProvider>
           </AuthProvider>
         </MuiPickersUtilsProvider>
       </IntlProvider>

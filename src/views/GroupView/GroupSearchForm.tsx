@@ -16,6 +16,7 @@ import {
 import { FARM_OPTIONS } from '../../utils/constants';
 import { DateRangePicker } from '../../components';
 import { GroupDataQuery } from '../../api/group';
+import { useUserConfig } from '../../hooks';
 
 type GroupSearchFormProps = {
   onSearch: (data: GroupDataQuery) => void
@@ -56,8 +57,9 @@ const validateInt = (value: string): boolean => !value || Number.isInteger(Numbe
 const GroupSearchForm = (props: GroupSearchFormProps): JSX.Element => {
   const intl = useIntl();
   const classes = useStyles();
+  const { userConfig, updateUserConfig } = useUserConfig();
   const [calvingnumber, setCalvingNumber] = useState<string>("");
-  const [farmid, setFarmId] = useState<string>("1");
+  const [farmid, setFarmId] = useState<string>(userConfig.farmid || "1");
   const [startDate, setStartDate] = useState<Moment | null>(null);
   const [endDate, setEndDate] = useState<Moment | null>(null);
 
@@ -67,6 +69,9 @@ const GroupSearchForm = (props: GroupSearchFormProps): JSX.Element => {
 
   const handleFarmChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setFarmId(event.target.value as string);
+    if(!userConfig.farmid || userConfig.farmid !== event.target.value) {
+      updateUserConfig({...userConfig, farmid: event.target.value});
+    }
   };
 
   const handleSearch = () => props.onSearch(

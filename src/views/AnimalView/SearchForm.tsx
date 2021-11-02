@@ -16,6 +16,7 @@ import {
 import { FARM_OPTIONS } from '../../utils/constants';
 import { DateRangePicker } from '../../components';
 import { AnimalDataQuery } from '../../api/animal';
+import { useUserConfig } from '../../hooks';
 
 
 type SearchFormProps = {
@@ -56,8 +57,9 @@ const useStyles = makeStyles((theme: Theme) =>
 const SearchForm = (props: SearchFormProps): JSX.Element => {
   const intl = useIntl();
   const classes = useStyles();
+  const { userConfig, updateUserConfig } = useUserConfig();
   const [id, setId] = useState<string>("");
-  const [farmid, setFarmId] = useState<string>("1");
+  const [farmid, setFarmId] = useState<string>(userConfig.farmid || "1");
   const [startDate, setStartDate] = useState<Moment | null>(null);
   const [endDate, setEndDate] = useState<Moment | null>(null);
 
@@ -67,6 +69,9 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
 
   const handleFarmChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setFarmId(event.target.value as string);
+    if(!userConfig.farmid || userConfig.farmid !== event.target.value) {
+      updateUserConfig({...userConfig, farmid: event.target.value});
+    }
   };
 
   const handleSearch = () => props.onSearch(
