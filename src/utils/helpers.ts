@@ -17,3 +17,8 @@ export const getStoredToken = () => {
 
   return token || null;
 }
+
+export const humanFileSize = (size: number): string => {
+  const unit: number = Math.floor( Math.log(size) / Math.log(1000) );
+  return Number(( size / Math.pow(1000, unit) ).toFixed(2)) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][unit];
+};

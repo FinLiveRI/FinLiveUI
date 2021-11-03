@@ -1,5 +1,5 @@
 import { FC, ReactChild} from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid, GridSpacing } from '@material-ui/core';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() =>
@@ -19,6 +19,7 @@ const useStyles = makeStyles(() =>
 
 type ContentContainerProps = {
   children: ReactChild | Array<ReactChild>;
+  spacing?: GridSpacing
 };
 
 
@@ -27,7 +28,7 @@ const ContentContainer: FC<ContentContainerProps> = (props: ContentContainerProp
 
   return (
     <div className={classes.root}>
-      <Grid container direction="column" alignItems="center" spacing={2} className={classes.container}>
+      <Grid container direction="column" alignItems="center" spacing={props.spacing || 2} className={classes.container}>
         {props.children}
       </Grid>
     </div>

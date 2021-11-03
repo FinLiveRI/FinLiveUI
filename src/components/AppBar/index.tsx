@@ -27,12 +27,16 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'none',
       userSelect: 'none',
       fontFamily: '"Knewave", cursive',
-      [theme.breakpoints.up('sm')]: {
+      [theme.breakpoints.up('md')]: {
         display: 'block',
       },
     },
     buttonSection: {
-      display: 'flex',
+      display: "flex",
+      width: "10%",
+      [theme.breakpoints.up('md')]: {
+        width: 'inherit',
+      },
     },
     buttonIcon: {
       fontSize: '36px',
@@ -40,6 +44,12 @@ const useStyles = makeStyles((theme: Theme) =>
     tabIcon: {
       fill: 'white',
     },
+    userMessage: {
+      display: "none",
+      [theme.breakpoints.up('md')]: {
+        display: 'block',
+      },
+    }
   }),
 );
 
@@ -82,7 +92,9 @@ const AppBar: FC = () => {
             userData
               ? (
                 <Grid container direction="row" justifyContent="flex-end" alignItems="center" spacing={4} className={classes.buttonSection}>
-                  <UserMessage name={`${userData.first_name} ${userData.last_name} `} />
+                  <Grid item className={classes.userMessage}>
+                    <UserMessage name={`${userData.first_name} ${userData.last_name} `} />
+                  </Grid>
                   <Grid item>
                     <IconButton
                       edge="end"
