@@ -1,47 +1,76 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import table from './data.json';
-import moment from 'moment';
-import delay from '../delay';
+import table from "./data.json";
+import moment from "moment";
+import delay from "../delay";
 
-const mockGetAnimal= async(query: any) => {
+const mockGetAnimal = async (query: any) => {
   const data: any = [...table];
   const animal: any = data.find((obj: any) => obj.id === parseInt(query.id));
 
   await delay();
 
-  if(!animal) {
+  if (!animal) {
     throw new Error("Animal does not exist.");
   }
 
-  const animal_data: any = {...animal};
-  if(query.startDate) {
-    animal_data.feed = animal_data?.feed.filter((obj: any) => moment(obj.timestamp.substring(0, 10)).isSameOrAfter(moment(query.startDate)));
-    animal_data.weight = animal_data?.weight.filter((obj: any) => moment(obj.timestamp.substring(0, 10)).isSameOrAfter(moment(query.startDate)));
-    animal_data.milk = animal_data?.milk.filter((obj: any) => moment(obj.timestamp.substring(0, 10)).isSameOrAfter(moment(query.startDate)));
+  const animal_data: any = { ...animal };
+  if (query.startDate) {
+    animal_data.feed = animal_data?.feed.filter((obj: any) =>
+      moment(obj.timestamp.substring(0, 10)).isSameOrAfter(
+        moment(query.startDate)
+      )
+    );
+    animal_data.weight = animal_data?.weight.filter((obj: any) =>
+      moment(obj.timestamp.substring(0, 10)).isSameOrAfter(
+        moment(query.startDate)
+      )
+    );
+    animal_data.milk = animal_data?.milk.filter((obj: any) =>
+      moment(obj.timestamp.substring(0, 10)).isSameOrAfter(
+        moment(query.startDate)
+      )
+    );
   }
-  if(query.endDate) {
-    animal_data.feed = animal_data?.feed.filter((obj: any) => moment(obj.timestamp.substring(0,10)).isSameOrBefore(moment(query.endDate)));
-    animal_data.weight= animal_data?.weight.filter((obj: any) => moment(obj.timestamp.substring(0,10)).isSameOrBefore(moment(query.endDate)));
-    animal_data.milk= animal_data?.milk.filter((obj: any) => moment(obj.timestamp.substring(0,10)).isSameOrBefore(moment(query.endDate)));
+  if (query.endDate) {
+    animal_data.feed = animal_data?.feed.filter((obj: any) =>
+      moment(obj.timestamp.substring(0, 10)).isSameOrBefore(
+        moment(query.endDate)
+      )
+    );
+    animal_data.weight = animal_data?.weight.filter((obj: any) =>
+      moment(obj.timestamp.substring(0, 10)).isSameOrBefore(
+        moment(query.endDate)
+      )
+    );
+    animal_data.milk = animal_data?.milk.filter((obj: any) =>
+      moment(obj.timestamp.substring(0, 10)).isSameOrBefore(
+        moment(query.endDate)
+      )
+    );
   }
 
-  animal_data.weight = animal_data.weight.map((obj: any) => ({...obj, lactation_period: moment(obj.timestamp).format("D")}));
-  animal_data.milk = animal_data.milk.map((obj: any) => ({...obj, lactation_period: moment(obj.timestamp).format("D")}));
+  animal_data.weight = animal_data.weight.map((obj: any) => ({
+    ...obj,
+    lactation_period: moment(obj.timestamp).format("D"),
+  }));
+  animal_data.milk = animal_data.milk.map((obj: any) => ({
+    ...obj,
+    lactation_period: moment(obj.timestamp).format("D"),
+  }));
   const insentec = animal_data.feed.map((obj: any) => ({
-    timestamp: obj.timestamp, 
+    timestamp: obj.timestamp,
     value: obj.value - Math.floor(Math.random() * 30),
-    lactation_period: moment(obj.timestamp).format("D")
+    lactation_period: moment(obj.timestamp).format("D"),
   }));
 
   const robot = animal_data.feed.map((obj: any) => ({
-    timestamp: obj.timestamp, 
+    timestamp: obj.timestamp,
     value: obj.value - Math.floor(Math.random() * 10),
-    lactation_period: moment(obj.timestamp).format("D")
+    lactation_period: moment(obj.timestamp).format("D"),
   }));
   animal_data.insentec = insentec;
   animal_data.robot = robot;
-  
   return { data: animal_data };
-}
+};
 
 export default mockGetAnimal;

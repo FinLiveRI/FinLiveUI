@@ -1,12 +1,10 @@
 import axios from "axios";
 import { getStoredToken } from "../utils/helpers";
 
-const url = "/management/account";
+const url = "/management/barns";
 
-export const getUserData = () => {
+export const getFarms = () => {
   const token: string | null = getStoredToken();
-
-  if (!token) return Promise.resolve(null);
 
   return axios.get(`${process.env.REACT_APP_API}${url}`, {
     headers: {

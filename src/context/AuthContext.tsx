@@ -1,9 +1,9 @@
 import { createContext, ReactChild, useState } from "react";
 
 type AuthProviderProps = {
-  user: any,
-  children: ReactChild | Array<ReactChild>
-}
+  user: any;
+  children: ReactChild | Array<ReactChild>;
+};
 
 export const AuthContext = createContext<any>(null);
 
@@ -15,4 +15,4 @@ export const AuthProvider = (props: AuthProviderProps) => {
       {props.children}
     </AuthContext.Provider>
   );
-}
+};

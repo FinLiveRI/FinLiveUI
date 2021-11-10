@@ -1,13 +1,16 @@
-import { unstable_createMuiStrictModeTheme as createTheme, Theme } from '@material-ui/core/styles';
+import {
+  unstable_createMuiStrictModeTheme as createTheme,
+  Theme,
+} from "@material-ui/core/styles";
 
 declare module "@material-ui/core/styles/createPalette" {
   interface Palette {
-    bg: Palette['primary'];
-    bgaccent: Palette['primary'];
+    bg: Palette["primary"];
+    bgaccent: Palette["primary"];
   }
   interface PaletteOptions {
-    bg: PaletteOptions['primary'];
-    bgaccent: PaletteOptions['primary'];
+    bg: PaletteOptions["primary"];
+    bgaccent: PaletteOptions["primary"];
   }
 }
 

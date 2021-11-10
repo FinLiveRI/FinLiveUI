@@ -1,29 +1,26 @@
-import axios from 'axios';
-import { getStoredToken } from '../utils/helpers';
-import useMock from '../mock/animal/api';
+import axios from "axios";
+import { getStoredToken } from "../utils/helpers";
+import useMock from "../mock/animal/api";
 
-const url = '/animal'
+const url = "/animal";
 
 export type AnimalDataQuery = {
-  id: string,
-  farmid?: string,
-  startDate?: string,
-  endDate?: string
-}
+  id: string;
+  farmid?: string;
+  startDate?: string;
+  endDate?: string;
+};
 
 const getAnimal = (query: AnimalDataQuery) => {
   const token: string | null = getStoredToken();
 
   const headers: any = {
-    'Authorization': `Bearer ${token}`
-  }
-  return axios.get(
-    `${process.env.API}${url}/${query.id}`, 
-    { headers }
-  );
+    Authorization: `Bearer ${token}`,
+    "x-org": "1",
+  };
+  return axios.get(`${process.env.API}${url}/${query.id}`, { headers });
 };
 
-export const getAnimalData = process.env.API 
+export const getAnimalData = process.env.API
   ? getAnimal
-  : async(query: AnimalDataQuery) => useMock(query)
-;
+  : async (query: AnimalDataQuery) => useMock(query);

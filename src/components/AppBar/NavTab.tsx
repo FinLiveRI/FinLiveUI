@@ -1,28 +1,21 @@
-import { cloneElement, ReactElement } from 'react';
-import { useHistory } from 'react-router-dom';
-import {
-  Icon,
-  Tab,
-} from '@material-ui/core';
-import { 
-  makeStyles, 
-  Theme, 
-  createStyles 
-} from '@material-ui/core/styles';
+import { cloneElement, ReactElement } from "react";
+import { useHistory } from "react-router-dom";
+import { Icon, Tab } from "@material-ui/core";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 
 type NavTabProps = {
-  svgIcon: ReactElement,
-  selected?: boolean,
-  label: string,
-  url: string,
+  svgIcon: ReactElement;
+  selected?: boolean;
+  label: string;
+  url: string;
 };
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     tabIcon: {
-      fill: 'white'
+      fill: "white",
     },
-  }),
+  })
 );
 
 const NavTab: React.FC<NavTabProps> = (props) => {
@@ -32,20 +25,18 @@ const NavTab: React.FC<NavTabProps> = (props) => {
   const handleClick = () => history.push(props.url);
 
   const TabIcon: ReactElement = (
-    <Icon>
-      {cloneElement(props.svgIcon, {className: classes.tabIcon})}
-    </Icon>
-  )
+    <Icon>{cloneElement(props.svgIcon, { className: classes.tabIcon })}</Icon>
+  );
 
   return (
-    <Tab 
+    <Tab
       selected={props.selected}
-      label={props.label} 
+      label={props.label}
       icon={TabIcon}
       onClick={handleClick}
       tabIndex={0}
     />
   );
-}
+};
 
 export default NavTab;

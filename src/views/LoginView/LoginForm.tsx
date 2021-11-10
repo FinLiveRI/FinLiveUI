@@ -1,31 +1,32 @@
-import React, { useState, FC } from 'react';
+import React, { useState, FC } from "react";
 import {
   Button,
   CircularProgress,
   Grid,
   TextField,
-  Typography
-} from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { FormattedMessage } from 'react-intl';
-import { login } from '../../api/auth';
-import theme from '../../theme';
-import { AxiosError } from 'axios';
+  Typography,
+} from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { FormattedMessage } from "react-intl";
+import { login } from "../../api/auth";
+import theme from "../../theme";
+import { AxiosError } from "axios";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      position: "absolute", 
-      top: "50%", 
-      left: "50%", 
+      position: "absolute",
+      top: "50%",
+      left: "50%",
       transform: "translate(-50%, -50%)",
       borderColor: theme.palette.primary.main,
       borderStyle: "solid",
       borderWidth: "0.3em",
       borderRadius: "3em",
-      boxShadow: "0 0.3em 0.3em 0 rgba(0, 0, 0, 0.16), 0 0 0 0.2em rgba(0, 0, 0, 0.08)",
-      overflow: "hidden"
+      boxShadow:
+        "0 0.3em 0.3em 0 rgba(0, 0, 0, 0.16), 0 0 0 0.2em rgba(0, 0, 0, 0.08)",
+      overflow: "hidden",
     },
     formContainer: {
       paddingTop: theme.spacing(5),
@@ -34,12 +35,12 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingRight: theme.spacing(6),
       width: "30vw",
       minWidth: "400px",
-      maxWidth: "600px"
+      maxWidth: "600px",
     },
     inputContainer: {
-      width: "100%"
-    }
-  }),
+      width: "100%",
+    },
+  })
 );
 
 const LoginForm: FC = () => {
@@ -57,35 +58,44 @@ const LoginForm: FC = () => {
     setPassword(event.target.value);
   };
 
-  const handleLogin = async(event: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
     setError(null);
 
-    const authError = await login({username, password});
+    const authError = await login({ username, password });
 
-    if(authError) {
-      setError(authError)
+    if (authError) {
+      setError(authError);
       setLoading(false);
     }
-  }
+  };
 
   return (
     <div className={classes.root}>
       <form onSubmit={handleLogin}>
-        <Grid container direction="column" alignItems="center" spacing={2} className={classes.formContainer} role="form">
+        <Grid
+          container
+          direction="column"
+          alignItems="center"
+          spacing={2}
+          className={classes.formContainer}
+          role="form"
+        >
           <Grid item>
-            {!loading 
-              ? (
-                <Typography variant="h3">
-                  <FormattedMessage description="Login form header" defaultMessage="Login" />
-                </Typography>
-              )
-              : (<CircularProgress color="secondary" size={60} thickness={5} />)
-            }
+            {!loading ? (
+              <Typography variant="h3">
+                <FormattedMessage
+                  description="Login form header"
+                  defaultMessage="Login"
+                />
+              </Typography>
+            ) : (
+              <CircularProgress color="secondary" size={60} thickness={5} />
+            )}
           </Grid>
           <Grid item className={classes.inputContainer}>
-            <TextField 
+            <TextField
               value={username}
               required
               fullWidth
@@ -93,11 +103,16 @@ const LoginForm: FC = () => {
               type="email"
               onChange={handleUserChange}
               variant="outlined"
-              label={<FormattedMessage description="Email input label" defaultMessage="Email" />}
+              label={
+                <FormattedMessage
+                  description="Email input label"
+                  defaultMessage="Email"
+                />
+              }
             />
           </Grid>
           <Grid item className={classes.inputContainer}>
-            <TextField 
+            <TextField
               value={password}
               fullWidth
               required
@@ -105,7 +120,12 @@ const LoginForm: FC = () => {
               name="password"
               type="password"
               variant="outlined"
-              label={<FormattedMessage description="Password input label" defaultMessage="Password" />}
+              label={
+                <FormattedMessage
+                  description="Password input label"
+                  defaultMessage="Password"
+                />
+              }
             />
           </Grid>
           <Grid item>
@@ -116,7 +136,10 @@ const LoginForm: FC = () => {
                 disabled={!username || !password || loading}
                 type="submit"
               >
-                <FormattedMessage description="Login button text" defaultMessage="Login" />
+                <FormattedMessage
+                  description="Login button text"
+                  defaultMessage="Login"
+                />
               </Button>
             </Grid>
           </Grid>
@@ -124,7 +147,7 @@ const LoginForm: FC = () => {
         {error && <Alert severity="error">{error.response?.data?.error}</Alert>}
       </form>
     </div>
-  )
-}
+  );
+};
 
 export default LoginForm;

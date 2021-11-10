@@ -1,6 +1,6 @@
-import { Switch, Redirect, Route } from 'react-router-dom';
-import { AnimalView, GroupView, LoginView, DataUploadView } from '../views';
-import PrivateRoute from './PrivateRoute';
+import { Switch, Redirect, Route } from "react-router-dom";
+import { AnimalView, GroupView, LoginView, DataUploadView } from "../views";
+import PrivateRoute from "./PrivateRoute";
 
 const Routes = () => (
   <Switch>
