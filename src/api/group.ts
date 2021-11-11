@@ -1,5 +1,4 @@
-import axios from "axios";
-import { getStoredToken } from "../utils/helpers";
+import http from "./request";
 import useMock from "../mock/group/api";
 
 const url = "/group";
@@ -12,13 +11,8 @@ export type GroupDataQuery = {
 };
 
 const getGroup = (query: GroupDataQuery) => {
-  const token: string | null = getStoredToken();
-  const headers: any = {
-    Authorization: `Bearer ${token}`,
-    "x-org": "1",
-  };
-  return axios.get(`${process.env.API}${url}/${query.calvingnumber}`, {
-    headers,
+  return http.get(`${url}/${query.calvingnumber}`, {
+    params: query,
   });
 };
 

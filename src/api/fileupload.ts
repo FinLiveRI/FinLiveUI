@@ -1,13 +1,18 @@
-import axios from "axios";
 import { FileWithPath } from "file-selector";
-import { getStoredToken } from "../utils/helpers";
-//import MockAdapter from 'axios-mock-adapter';
-import { refreshToken } from "./auth";
-//import delay from '../mock/delay';
+import http from "./request";
 
-/* const mock = new MockAdapter(axios);
+/* 
+  Uncomment the code below if a mock test is needed for testing and developing the FileUploader and onUploadProgress implementation.
+  Keep in mind the adapter intercepts all api calls.
+*/
 
-mock.onPost('/upload').reply(async (config) => {
+/*
+import MockAdapter from "axios-mock-adapter";
+import delay from "../mock/delay";
+
+const mock = new MockAdapter(http);
+
+mock.onPost("/upload").reply(async (config) => {
   const total = 1024;
   for (const progress of [0, 0.2, 0.4, 0.6, 0.8, 1]) {
     await delay(500, 1000);
@@ -15,7 +20,7 @@ mock.onPost('/upload').reply(async (config) => {
       config.onUploadProgress({ loaded: total * progress, total });
     }
   }
-  const rand: number = Math.floor(Math.random() * 100)
+  const rand: number = Math.floor(Math.random() * 100);
   return [rand > 50 ? 500 : 200, null];
 });
 */
@@ -28,35 +33,27 @@ const postFile = (
   farmid: string,
   onUploadProgress: any
 ) => {
-  const token: string | null = getStoredToken();
   const formData: FormData = new FormData();
   formData.append("file", file, file.name);
   formData.append("type", type);
   formData.append("farmid", farmid);
 
-  const headers: any = {
-    Authorization: `Bearer ${token}`,
-    "x-org": "1",
-  };
-  return axios.post(`${url}`, formData, { headers, onUploadProgress });
+  return http.post(`${url}`, formData, {
+    onUploadProgress,
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 };
 
 export const uploadFile = async (
   file: FileWithPath,
   type: string,
   farmid: string,
-  onUploadProgress: any,
-  retryCount = 0
+  onUploadProgress: any
 ) => {
   try {
     const response: any = await postFile(file, type, farmid, onUploadProgress);
     return response;
   } catch (error: any) {
-    if (getStoredToken() && error.response?.status === 401 && !retryCount) {
-      await refreshToken();
-      await uploadFile(file, type, farmid, onUploadProgress, retryCount + 1);
-    } else {
-      throw Error("File upload failed");
-    }
+    throw Error("File upload failed");
   }
 };

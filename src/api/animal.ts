@@ -1,5 +1,4 @@
-import axios from "axios";
-import { getStoredToken } from "../utils/helpers";
+import http from "./request";
 import useMock from "../mock/animal/api";
 
 const url = "/animal";
@@ -12,13 +11,7 @@ export type AnimalDataQuery = {
 };
 
 const getAnimal = (query: AnimalDataQuery) => {
-  const token: string | null = getStoredToken();
-
-  const headers: any = {
-    Authorization: `Bearer ${token}`,
-    "x-org": "1",
-  };
-  return axios.get(`${process.env.API}${url}/${query.id}`, { headers });
+  return http.get(`${url}/${query.id}`, { params: query });
 };
 
 export const getAnimalData = process.env.API

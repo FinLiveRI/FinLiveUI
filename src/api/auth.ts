@@ -35,6 +35,7 @@ export const refreshToken = async () => {
         refresh: obj.refresh,
       };
       localStorage.setItem("user", JSON.stringify(newUser));
+      return response.data.access;
     }
   } catch (error: any) {
     logError(error);

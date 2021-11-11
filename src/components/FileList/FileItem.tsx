@@ -37,7 +37,6 @@ const useStyles = makeStyles((theme: Theme) =>
 const FileList: FC<FileItemProps> = (props: FileItemProps) => {
   const classes = useStyles();
   const intl = useIntl();
-  console.log(props.fileType);
 
   const handleDelete = () => {
     if (props.onDelete) {
