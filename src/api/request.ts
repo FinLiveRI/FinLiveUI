@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import { refreshToken, logout } from "./auth";
 import { getStoredToken, logError } from "../utils/helpers";
 
 // Create an axios instance
-const instance = axios.create({
+const instance: AxiosInstance = axios.create({
   baseURL: `${process.env.REACT_APP_API}`,
   timeout: 300000,
   headers: {
@@ -15,23 +15,23 @@ const instance = axios.create({
 instance.defaults.headers.post["Content-Type"] = "application/json";
 
 // Refresh process status
-let isRefreshing = false;
+let isRefreshing: boolean = false;
 
 // Retry queue for requests waiting for token refresh
 let requests: Array<any> = [];
 
 instance.interceptors.response.use(undefined, (err) => {
-  const code = err.response ? err.response.status : null;
+  const code: number | null = err.response ? err.response.status : null;
 
   if (code === 401 && getStoredToken()) {
-    const config = err.config;
+    const config: any = err.config;
 
     if (!isRefreshing) {
       isRefreshing = true;
 
       return refreshToken()
-        .then((accessToken) => {
-          const token = accessToken;
+        .then((accessToken: string) => {
+          const token: string = accessToken;
           instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
           config.headers["Authorization"] = `Bearer ${token}`;
 
