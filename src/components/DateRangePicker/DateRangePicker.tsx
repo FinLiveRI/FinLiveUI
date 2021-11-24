@@ -10,6 +10,7 @@ type DateRangePickerProps = {
   handleStartChange: (date: Moment | null) => any;
   handleEndChange: (date: Moment | null) => any;
   error?: boolean;
+  required?: boolean;
 };
 
 const DateRangePicker: FC<DateRangePickerProps> = (
@@ -40,6 +41,8 @@ const DateRangePicker: FC<DateRangePickerProps> = (
           error={props.error}
           variant="dialog"
           inputVariant="outlined"
+          aria-required={props.required}
+          required={props.required}
           value={props.startDate}
           KeyboardButtonProps={{
             "aria-label": intl.formatMessage({
@@ -67,6 +70,8 @@ const DateRangePicker: FC<DateRangePickerProps> = (
           error={props.error}
           variant="dialog"
           inputVariant="outlined"
+          required={props.required}
+          aria-required={props.required}
           value={props.endDate}
           KeyboardButtonProps={{
             "aria-label": intl.formatMessage({

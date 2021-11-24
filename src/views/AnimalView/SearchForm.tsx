@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Moment } from "moment";
+import moment, { Moment } from "moment";
 import { Button, Grid, MenuItem, Select, TextField } from "@material-ui/core";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { CloudDownload, Search } from "@material-ui/icons";
@@ -43,8 +43,10 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
   const { userConfig, updateUserConfig } = useUserConfig();
   const [id, setId] = useState<string>("");
   const [farmid, setFarmId] = useState<string>(userConfig.farmid || "");
-  const [startDate, setStartDate] = useState<Moment | null>(null);
-  const [endDate, setEndDate] = useState<Moment | null>(null);
+  const [startDate, setStartDate] = useState<Moment | null>(
+    moment().subtract({ years: 1 })
+  );
+  const [endDate, setEndDate] = useState<Moment | null>(moment());
 
   const farmData = useFarms();
   const farms: Array<Farm> = farmData.data;
@@ -64,12 +66,13 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
     props.onSearch({
       animalid: id,
       farmid,
-      begin: startDate?.format("YYYY-MM-DD"),
-      end: endDate?.format("YYYY-MM-DD"),
+      begin: startDate?.format("YYYY-MM-DD") || "",
+      end: endDate?.format("YYYY-MM-DD") || "",
     });
 
   const validateDates = (): boolean =>
-    startDate && endDate ? startDate.isBefore(endDate) : true;
+    startDate && endDate && startDate.isBefore(endDate) ? true : false;
+
   return (
     <>
       <Grid
@@ -150,6 +153,7 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
         >
           <Grid item xs={9} lg={7} xl={7}>
             <DateRangePicker
+              required
               error={!validateDates()}
               startDate={startDate}
               endDate={endDate}

@@ -5,9 +5,9 @@ const url = "/group";
 
 export type GroupDataQuery = {
   calvingnumber: string;
-  farmid?: string;
-  begin?: string;
-  end?: string;
+  farmid: string;
+  begin: string;
+  end: string;
 };
 
 const getGroup = (query: GroupDataQuery) => {

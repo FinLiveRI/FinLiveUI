@@ -47,7 +47,12 @@ const useStyles = makeStyles(() =>
 const AnimalView: FC = () => {
   const classes = useStyles();
   const intl = useIntl();
-  const [query, setQuery] = useState<AnimalDataQuery>({ animalid: "" });
+  const [query, setQuery] = useState<AnimalDataQuery>({
+    animalid: "",
+    farmid: "",
+    begin: "",
+    end: "",
+  });
   const [showError, setShowError] = useState<boolean>(false);
 
   const { data, isLoading, error }: AnimalChartResponse = useAnimalData(query);

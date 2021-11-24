@@ -40,7 +40,12 @@ const useStyles = makeStyles(() =>
 const GroupView: FC = () => {
   const classes = useStyles();
   const intl = useIntl();
-  const [query, setQuery] = useState<GroupDataQuery>({ calvingnumber: "" });
+  const [query, setQuery] = useState<GroupDataQuery>({
+    calvingnumber: "",
+    farmid: "",
+    begin: "",
+    end: "",
+  });
   const [showError, setShowError] = useState<boolean>(false);
 
   const { data, isLoading, error } = useGroupData(query);

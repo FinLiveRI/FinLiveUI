@@ -5,9 +5,9 @@ const url = "/charts/animalchart";
 
 export type AnimalDataQuery = {
   animalid: string;
-  farmid?: string;
-  begin?: string;
-  end?: string;
+  farmid: string;
+  begin: string;
+  end: string;
 };
 
 const getAnimal = (query: AnimalDataQuery) => {
