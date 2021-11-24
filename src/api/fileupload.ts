@@ -1,5 +1,6 @@
 import { FileWithPath } from "file-selector";
-import http from "./request";
+import { getStoredOrgId } from "../utils/helpers";
+import http from "./reqWithAuth";
 
 /* 
   Uncomment the code below if a mock test is needed for testing and developing the FileUploader and onUploadProgress implementation.
@@ -40,7 +41,10 @@ const postFile = (
 
   return http.post(`${url}`, formData, {
     onUploadProgress,
-    headers: { "Content-Type": "multipart/form-data" },
+    headers: {
+      "Content-Type": "multipart/form-data",
+      "x-org": getStoredOrgId(),
+    },
   });
 };
 

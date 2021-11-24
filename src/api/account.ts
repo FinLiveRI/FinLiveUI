@@ -1,4 +1,4 @@
-import http from "./request";
+import http from "./reqWithAuth";
 
 const url = "/auth/me";
 
