@@ -1,3 +1,5 @@
+import { UserConfig } from "../context/UserConfigContext";
+
 export const logError = (error: any): void => {
   if (error.response) {
     console.error(error.response.data);
@@ -16,6 +18,15 @@ export const getStoredToken = () => {
   const token: string = obj?.access;
 
   return token || null;
+};
+
+export const getStoredOrgId = () => {
+  const userConfig: string | null = localStorage.getItem("userConfig");
+  const obj: UserConfig | null = userConfig ? JSON.parse(userConfig) : null;
+  const organization: number | null =
+    obj?.organization?.organization_id || null;
+
+  return organization || null;
 };
 
 export const humanFileSize = (size: number): string => {

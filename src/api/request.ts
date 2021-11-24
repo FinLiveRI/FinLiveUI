@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import { refreshToken, logout } from "./auth";
-import { getStoredToken, logError } from "../utils/helpers";
+import { getStoredOrgId, getStoredToken, logError } from "../utils/helpers";
 
 // Create an axios instance
 const instance: AxiosInstance = axios.create({
@@ -8,7 +8,7 @@ const instance: AxiosInstance = axios.create({
   timeout: 300000,
   headers: {
     Authorization: `Bearer ${getStoredToken()}`,
-    "x-org": "1",
+    "x-org": getStoredOrgId(),
   },
 });
 

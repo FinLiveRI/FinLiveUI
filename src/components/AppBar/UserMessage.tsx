@@ -5,6 +5,7 @@ import { FormattedMessage } from "react-intl";
 
 type UserMessageProps = {
   name?: string;
+  organization?: string;
 };
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -26,11 +27,15 @@ const UserMessage: FC<UserMessageProps> = (props: UserMessageProps) => {
   return (
     <Grid item>
       <Typography className={classes.userMessage}>
-        {props.name || (
+        {!props.name && !props.organization ? (
           <FormattedMessage
             description="Guest user navbar message"
             defaultMessage="Browsing as guest"
           />
+        ) : (
+          `${props.name || ""}${props.name && props.organization ? " – " : ""}${
+            props.organization || ""
+          }`
         )}
       </Typography>
     </Grid>

@@ -13,7 +13,7 @@ import {
 import { ArrowDownward, ArrowUpward } from "@material-ui/icons";
 
 type InfoObject = {
-  [key: string]: string;
+  [key: string]: string | number;
 };
 
 type InfoBoxProps = {

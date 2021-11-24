@@ -1,19 +1,19 @@
 import http from "./request";
 import useMock from "../mock/animal/api";
 
-const url = "/animal";
+const url = "/charts/animalchart";
 
 export type AnimalDataQuery = {
-  id: string;
+  animalid: string;
   farmid?: string;
-  startDate?: string;
-  endDate?: string;
+  begin?: string;
+  end?: string;
 };
 
 const getAnimal = (query: AnimalDataQuery) => {
-  return http.get(`${url}/${query.id}`, { params: query });
+  return http.get(`${url}`, { headers: { "x-filter": JSON.stringify(query) } });
 };
 
-export const getAnimalData = process.env.API
+export const getAnimalData = !process.env.API
   ? getAnimal
   : async (query: AnimalDataQuery) => useMock(query);

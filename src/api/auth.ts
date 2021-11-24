@@ -3,7 +3,12 @@ import { logError } from "../utils/helpers";
 
 const url = "/auth";
 
-export const login = async (query: any) => {
+type LoginQuery = {
+  username: string;
+  password: string;
+};
+
+export const login = async (query: LoginQuery) => {
   try {
     const response: AxiosResponse = await axios.post(
       `${process.env.REACT_APP_API}${url}/login`,

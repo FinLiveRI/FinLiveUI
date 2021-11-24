@@ -14,7 +14,14 @@ import { ReactComponent as CowIcon } from "../../assets/icons/cow.svg";
 import { MAIN_BASIC_INFO_KEYS } from "../../utils/constants";
 import { useAnimalData } from "../../hooks";
 import SearchForm from "./SearchForm";
-import { xKeyObj } from "../../utils/types";
+import { AnimalChart, xKeyObj } from "../../utils/types";
+import { AnimalDataQuery } from "../../api/animal";
+
+type AnimalChartResponse = {
+  data: AnimalChart | null;
+  isLoading: boolean;
+  error: any;
+};
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -40,31 +47,94 @@ const useStyles = makeStyles(() =>
 const AnimalView: FC = () => {
   const classes = useStyles();
   const intl = useIntl();
-  const [query, setQuery] = useState<any>({});
+  const [query, setQuery] = useState<AnimalDataQuery>({ animalid: "" });
   const [showError, setShowError] = useState<boolean>(false);
 
-  const { data, isLoading, error } = useAnimalData(query);
+  const { data, isLoading, error }: AnimalChartResponse = useAnimalData(query);
 
   useEffect(() => {
     if (error) setShowError(true);
   }, [error]);
 
-  const chartXKeys: Array<xKeyObj> = [
+  const durationXKeys: Array<xKeyObj> = [
     {
-      key: "timestamp",
+      key: "visit_day",
       type: "time",
       plot: "line",
       legend: intl.formatMessage({
-        description: "Timestamp axis legend",
-        defaultMessage: "day",
+        description: "Visit day axis legend",
+        defaultMessage: "Visit day",
       }),
     },
     {
-      key: "lactation_period",
+      key: "lactation",
       type: "linear",
       plot: "scatter",
       legend: intl.formatMessage({
-        description: "Timestamp axis legend",
+        description: "Lactation period axis legend",
+        defaultMessage: "day",
+      }),
+    },
+  ];
+
+  const feedXKeys: Array<xKeyObj> = [
+    {
+      key: "day",
+      type: "time",
+      plot: "line",
+      legend: intl.formatMessage({
+        description: "Day axis legend",
+        defaultMessage: "Day",
+      }),
+    },
+    {
+      key: "lactation",
+      type: "linear",
+      plot: "scatter",
+      legend: intl.formatMessage({
+        description: "Lactation period axis legend",
+        defaultMessage: "day",
+      }),
+    },
+  ];
+
+  const milkXKeys: Array<xKeyObj> = [
+    {
+      key: "day",
+      type: "time",
+      plot: "line",
+      legend: intl.formatMessage({
+        description: "Visit day axis legend",
+        defaultMessage: "Visit day",
+      }),
+    },
+    {
+      key: "lactation",
+      type: "linear",
+      plot: "scatter",
+      legend: intl.formatMessage({
+        description: "Lactation period axis legend",
+        defaultMessage: "day",
+      }),
+    },
+  ];
+
+  const weightXKeys: Array<xKeyObj> = [
+    {
+      key: "day",
+      type: "time",
+      plot: "line",
+      legend: intl.formatMessage({
+        description: "Visit day axis legend",
+        defaultMessage: "Visit day",
+      }),
+    },
+    {
+      key: "lactation",
+      type: "linear",
+      plot: "scatter",
+      legend: intl.formatMessage({
+        description: "Lactation period axis legend",
         defaultMessage: "day",
       }),
     },
@@ -104,10 +174,10 @@ const AnimalView: FC = () => {
         </Grid>
         <Grid item xs={false} lg={false} xl={1} />
         <Grid item container alignItems="center" xs={10} lg={4} xl={4}>
-          {data && data.info && !error && !isLoading && (
+          {data && data.animal && !error && !isLoading && (
             <InfoBox
-              data={data.info}
-              hiddenKeys={Object.keys(data.info).filter(
+              data={data.animal}
+              hiddenKeys={Object.keys(data.animal).filter(
                 (key) => !MAIN_BASIC_INFO_KEYS.includes(key)
               )}
             />
@@ -131,8 +201,9 @@ const AnimalView: FC = () => {
               defaultMessage: "Weight",
             })}
             chartData={[{ id: "weight", data: data?.weight }]}
-            xKeys={chartXKeys}
+            xKeys={weightXKeys}
             yKey="weight"
+            timestampKey={weightXKeys[0].key}
             yLegend={intl.formatMessage({
               description: "Weight in kg label",
               defaultMessage: "weight (kg)",
@@ -144,8 +215,9 @@ const AnimalView: FC = () => {
               defaultMessage: "Total Milk",
             })}
             chartData={[{ id: "milk", data: data?.milk }]}
-            xKeys={chartXKeys}
-            yKey="totalweight"
+            xKeys={milkXKeys}
+            yKey="total_milk"
+            timestampKey={milkXKeys[0].key}
             yLegend={intl.formatMessage({
               description: "Total milk in kg label",
               defaultMessage: "total milk (kg)",
@@ -157,11 +229,13 @@ const AnimalView: FC = () => {
               defaultMessage: "Feed Consumption",
             })}
             chartData={[
-              { id: "insentec", data: data?.insentec },
-              { id: "robot", data: data?.robot },
+              { id: "feed", data: data?.feed },
+              /* { id: "insentec", data: data?.insentec },
+              { id: "robot", data: data?.robot }, */
             ]}
-            xKeys={chartXKeys}
-            yKey="value"
+            xKeys={feedXKeys}
+            yKey="daily_weight"
+            timestampKey={feedXKeys[0].key}
             yLegend={intl.formatMessage({
               description: "Consumption in kg label",
               defaultMessage: "consumption (kg)",
@@ -172,9 +246,10 @@ const AnimalView: FC = () => {
               description: "Feeding duration title",
               defaultMessage: "Feeding Duration",
             })}
-            chartData={[{ id: "feeding duration", data: data?.milk }]}
-            xKeys={chartXKeys}
-            yKey="totalweight"
+            chartData={[{ id: "feeding duration", data: data?.duration }]}
+            xKeys={durationXKeys}
+            yKey="duration"
+            timestampKey={durationXKeys[0].key}
             yLegend={intl.formatMessage({
               description: "Total feeding duration in minutes label",
               defaultMessage: "duration (min)",

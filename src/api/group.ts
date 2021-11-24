@@ -6,14 +6,12 @@ const url = "/group";
 export type GroupDataQuery = {
   calvingnumber: string;
   farmid?: string;
-  startDate?: string;
-  endDate?: string;
+  begin?: string;
+  end?: string;
 };
 
 const getGroup = (query: GroupDataQuery) => {
-  return http.get(`${url}/${query.calvingnumber}`, {
-    params: query,
-  });
+  return http.get(`${url}`, { headers: { "x-filter": JSON.stringify(query) } });
 };
 
 export const getGroupData = process.env.API

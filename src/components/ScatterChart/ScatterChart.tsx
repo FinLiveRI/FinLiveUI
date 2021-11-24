@@ -34,7 +34,7 @@ const theme: Theme = {
 
 const ScatterChart: FC<ScatterChartProps> = (props: ScatterChartProps) => {
   const showLegend: boolean = props.data && props.data.length > 1;
-  console.log(props.data);
+
   return (
     <ResponsiveScatterPlot
       data={props.data}

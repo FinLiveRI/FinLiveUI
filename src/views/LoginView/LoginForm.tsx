@@ -99,14 +99,13 @@ const LoginForm: FC = () => {
               value={username}
               required
               fullWidth
-              name="email"
-              type="email"
+              name="username"
               onChange={handleUserChange}
               variant="outlined"
               label={
                 <FormattedMessage
-                  description="Email input label"
-                  defaultMessage="Email"
+                  description="Username input label"
+                  defaultMessage="Username"
                 />
               }
             />

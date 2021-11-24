@@ -15,6 +15,10 @@ type ProfileMenuProps = {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    container: {
+      minWidth: "12em",
+      padding: "0 1vw 1vw 1vw",
+    },
     profileIcon: {
       fontSize: "4em",
     },
@@ -34,12 +38,12 @@ const ProfileMenu: React.FC<ProfileMenuProps> = (props: ProfileMenuProps) => {
       onClose={props.handleClose}
     >
       <Grid
+        className={classes.container}
         container
         direction="column"
         justifyContent="center"
         alignItems="center"
         spacing={1}
-        style={{ padding: "0 1vw 1vw 1vw" }}
       >
         <Grid item>
           <AccountCircle color="primary" className={classes.profileIcon} />

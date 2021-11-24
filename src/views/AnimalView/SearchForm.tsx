@@ -62,10 +62,10 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
 
   const handleSearch = () =>
     props.onSearch({
-      id,
+      animalid: id,
       farmid,
-      startDate: startDate?.format("YYYY-MM-DD"),
-      endDate: endDate?.format("YYYY-MM-DD"),
+      begin: startDate?.format("YYYY-MM-DD"),
+      end: endDate?.format("YYYY-MM-DD"),
     });
 
   const validateDates = (): boolean =>
@@ -99,7 +99,7 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
               onChange={handleIdChange}
               label={intl.formatMessage({
                 description: "Animal SearchInput label",
-                defaultMessage: "ID",
+                defaultMessage: "Animal ID",
               })}
             />
           </Grid>

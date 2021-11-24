@@ -9,11 +9,12 @@ import {
 import { AccountCircle } from "@material-ui/icons";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { useIntl } from "react-intl";
-import { useAuth, useUserData } from "../../hooks";
+import { useAuth, useUserConfig, useUserData } from "../../hooks";
 import ProfileMenu from "./ProfileMenu";
 import UserMessage from "./UserMessage";
 import TabBar from "./TabBar";
 import { ErrorSnack } from "..";
+import { Organization, UserAccountInfo } from "../../utils/types";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -53,16 +54,44 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+const getUserName = (userData: UserAccountInfo | null): string | undefined => {
+  if (!userData || !userData.user) {
+    return undefined;
+  }
+  return userData.user.first_name
+    ? userData.user.first_name + " " + userData.user.last_name
+    : userData.user.username;
+};
+
 const AppBar: FC = () => {
   const classes = useStyles();
   const user = useAuth().currentUser;
+  const { userConfig, updateUserConfig } = useUserConfig();
   const intl = useIntl();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [showError, setShowError] = useState<boolean>(false);
   const isMenuOpen = !!anchorEl;
 
   const { data, isLoading, error } = useUserData();
-  const userData: any = data ? data[0]?.user : null;
+  const userData: UserAccountInfo | null = data ? data : null;
+
+  useEffect(() => {
+    if (
+      data?.organizations &&
+      data.organizations.length &&
+      !userConfig.organization
+    ) {
+      const organization: Organization =
+        data.organizations.find((org: Organization) => org.default) ||
+        data.organizations[0];
+      updateUserConfig({ ...userConfig, organization });
+    }
+  }, [data, updateUserConfig, userConfig]);
+
+  const organization: string =
+    data && data.organizations
+      ? data.organizations.find((org: Organization) => org.default).name
+      : undefined;
 
   useEffect(() => {
     setShowError(true);
@@ -95,11 +124,8 @@ const AppBar: FC = () => {
             >
               <Grid item className={classes.userMessage}>
                 <UserMessage
-                  name={
-                    userData
-                      ? `${userData.first_name} ${userData.last_name}`
-                      : undefined
-                  }
+                  name={getUserName(userData)}
+                  organization={organization || undefined}
                 />
               </Grid>
               <Grid item>
@@ -126,16 +152,8 @@ const AppBar: FC = () => {
           anchorEl={anchorEl}
           isOpen={isMenuOpen}
           handleClose={handleMenuClose}
-          nameText={
-            userData
-              ? userData.first_name + " " + userData.last_name
-              : "unknown"
-          }
-          organization={
-            userData && userData.organization
-              ? userData.organization
-              : "unknown organization"
-          }
+          nameText={getUserName(userData) || "unknown"}
+          organization={organization ? organization : "unknown organization"}
         />
       )}
       {!isLoading && error && (

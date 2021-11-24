@@ -13,7 +13,8 @@ import {
 import { useGroupData } from "../../hooks";
 import { ReactComponent as GroupIcon } from "../../assets/icons/group.svg";
 import GroupSearchForm from "./GroupSearchForm";
-import { xKeyObj } from "../../utils/types";
+import { Animal, xKeyObj } from "../../utils/types";
+import { GroupDataQuery } from "../../api/group";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -39,7 +40,7 @@ const useStyles = makeStyles(() =>
 const GroupView: FC = () => {
   const classes = useStyles();
   const intl = useIntl();
-  const [query, setQuery] = useState<any>({});
+  const [query, setQuery] = useState<GroupDataQuery>({ calvingnumber: "" });
   const [showError, setShowError] = useState<boolean>(false);
 
   const { data, isLoading, error } = useGroupData(query);
@@ -48,22 +49,85 @@ const GroupView: FC = () => {
     if (error) setShowError(true);
   }, [error]);
 
-  const chartXKeys: Array<xKeyObj> = [
+  const durationXKeys: Array<xKeyObj> = [
     {
-      key: "timestamp",
+      key: "visit_day",
       type: "time",
       plot: "line",
       legend: intl.formatMessage({
-        description: "Timestamp axis legend",
-        defaultMessage: "day",
+        description: "Visit day axis legend",
+        defaultMessage: "Visit day",
       }),
     },
     {
-      key: "lactation_period",
+      key: "lactation",
       type: "linear",
       plot: "scatter",
       legend: intl.formatMessage({
-        description: "Timestamp axis legend",
+        description: "Lactation period axis legend",
+        defaultMessage: "day",
+      }),
+    },
+  ];
+
+  const feedXKeys: Array<xKeyObj> = [
+    {
+      key: "day",
+      type: "time",
+      plot: "line",
+      legend: intl.formatMessage({
+        description: "Day axis legend",
+        defaultMessage: "Day",
+      }),
+    },
+    {
+      key: "lactation",
+      type: "linear",
+      plot: "scatter",
+      legend: intl.formatMessage({
+        description: "Lactation period axis legend",
+        defaultMessage: "day",
+      }),
+    },
+  ];
+
+  const milkXKeys: Array<xKeyObj> = [
+    {
+      key: "day",
+      type: "time",
+      plot: "line",
+      legend: intl.formatMessage({
+        description: "Visit day axis legend",
+        defaultMessage: "Visit day",
+      }),
+    },
+    {
+      key: "lactation",
+      type: "linear",
+      plot: "scatter",
+      legend: intl.formatMessage({
+        description: "Lactation period axis legend",
+        defaultMessage: "day",
+      }),
+    },
+  ];
+
+  const weightXKeys: Array<xKeyObj> = [
+    {
+      key: "day",
+      type: "time",
+      plot: "line",
+      legend: intl.formatMessage({
+        description: "Visit day axis legend",
+        defaultMessage: "Visit day",
+      }),
+    },
+    {
+      key: "lactation",
+      type: "linear",
+      plot: "scatter",
+      legend: intl.formatMessage({
+        description: "Lactation period axis legend",
         defaultMessage: "day",
       }),
     },
@@ -105,15 +169,15 @@ const GroupView: FC = () => {
         <Grid item container alignItems="center" xs={10} lg={4} xl={4}>
           {data && data.info && !isLoading && !error && (
             <InfoBox
-              data={data.info.reduce(
-                (dataObj: any, animal: any) => ({
+              data={data.animal.reduce(
+                (dataObj: any, animal: Animal) => ({
                   ...dataObj,
                   [animal.animalid]: animal.name,
                 }),
                 {}
               )}
               hiddenKeys={data.info
-                .map((animal: any) => animal.animalid)
+                .map((animal: Animal) => animal.animalid)
                 .filter((animal: any, index: number) => index > 1)}
             />
           )}
@@ -135,8 +199,12 @@ const GroupView: FC = () => {
               description: "Average Weight Chart title",
               defaultMessage: "Average Weight",
             })}
-            chartData={[{ id: "weight", data: data?.weight }]}
-            xKeys={chartXKeys}
+            chartData={[
+              { id: "feed", data: data?.feed },
+              /* { id: "insentec", data: data?.insentec },
+            { id: "robot", data: data?.robot }, */
+            ]}
+            xKeys={weightXKeys}
             yKey="weight"
             yLegend={intl.formatMessage({
               description: "Average Weight in kg label",
@@ -149,8 +217,8 @@ const GroupView: FC = () => {
               defaultMessage: "Average Milk",
             })}
             chartData={[{ id: "milk", data: data?.milk }]}
-            xKeys={chartXKeys}
-            yKey="totalweight"
+            xKeys={milkXKeys}
+            yKey="total_milk"
             yLegend={intl.formatMessage({
               description: "Average milk in kg label",
               defaultMessage: "milk (kg)",
@@ -161,12 +229,9 @@ const GroupView: FC = () => {
               description: "Feed Consumption Chart title",
               defaultMessage: "Average Feed Consumption",
             })}
-            chartData={[
-              { id: "insentec", data: data?.insentec },
-              { id: "robot", data: data?.robot },
-            ]}
-            xKeys={chartXKeys}
-            yKey="value"
+            chartData={[{ id: "feed", data: data?.feed }]}
+            xKeys={feedXKeys}
+            yKey="daily_weight"
             yLegend={intl.formatMessage({
               description: "Consumption in kg label",
               defaultMessage: "consumption (kg)",
@@ -177,9 +242,9 @@ const GroupView: FC = () => {
               description: "Average Feeding duration title",
               defaultMessage: "Average Feeding Duration",
             })}
-            chartData={[{ id: "feeding duration", data: data?.milk }]}
-            xKeys={chartXKeys}
-            yKey="totalweight"
+            chartData={[{ id: "feeding duration", data: data?.duration }]}
+            xKeys={durationXKeys}
+            yKey="duration"
             yLegend={intl.formatMessage({
               description: "Average feeding duration in minutes label",
               defaultMessage: "duration (min)",

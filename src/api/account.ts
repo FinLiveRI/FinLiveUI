@@ -1,5 +1,5 @@
 import http from "./request";
 
-const url = "/management/account";
+const url = "/auth/me";
 
 export const getUserData = () => http.get(url);

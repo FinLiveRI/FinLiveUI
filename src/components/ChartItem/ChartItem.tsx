@@ -19,6 +19,7 @@ type ChartItemProps = {
   xKeys: Array<xKeyObj>;
   yKey: string;
   yLegend: string;
+  timestampKey?: string;
 };
 
 type XScaleOption = "time" | "week";
@@ -45,23 +46,34 @@ const useStyles = makeStyles(() =>
   })
 );
 
+const sortByDate = (arr: Array<any>) => {
+  return arr.sort((a: any, b: any) => {
+    return (new Date(b.x) as any) - (new Date(a.x) as any);
+  });
+};
+
 const getArrayAverage = (nums: Array<number>): number =>
   nums.reduce((a: number, b: number) => a + b) / nums.length;
 
-const averageByWeek = (data: Array<any>, valueKey: string) => {
+const averageByWeek = (
+  data: Array<any>,
+  valueKey: string,
+  timestampKey: string = "timestamp"
+) => {
   const weekDayObj = data.reduce((acc, obj) => {
-    const weekKey: string = `${moment(obj.timestamp).year()}-${moment(
-      obj.timestamp
+    const weekKey: string = `${moment(obj[timestampKey]).year()}-${moment(
+      obj[timestampKey]
     ).week()}`;
 
     if (!acc[weekKey]) {
-      acc[weekKey] = { date: obj.timestamp, values: [] };
+      acc[weekKey] = { date: obj[timestampKey], values: [] };
     }
 
-    acc[weekKey].values.push(obj[valueKey]);
+    acc[weekKey].values.push(Number(obj[valueKey]));
 
     return acc;
   }, {});
+
   return Object.keys(weekDayObj).map((key) => ({
     x: new Date(weekDayObj[key].date),
     y: getArrayAverage(weekDayObj[key].values),
@@ -89,8 +101,10 @@ const ChartItem: FC<ChartItemProps> = (props: ChartItemProps) => {
         .filter((obj: ChartDataItem) => obj.data && obj.data.length)
         .map((obj: ChartDataItem) => ({
           id: obj.id,
-          data: obj.data.map((dataobj: any) =>
-            mapTimeSeriesData(dataobj, props.yKey)
+          data: sortByDate(
+            obj.data.map((dataobj: any) =>
+              mapTimeSeriesData(dataobj, props.yKey)
+            )
           ),
         }));
     } else if (dateOption === "week" && xKey.plot === "line") {
@@ -98,19 +112,30 @@ const ChartItem: FC<ChartItemProps> = (props: ChartItemProps) => {
         .filter((obj: ChartDataItem) => obj.data && obj.data.length)
         .map((obj: ChartDataItem) => ({
           id: obj.id,
-          data: averageByWeek(obj.data, props.yKey),
+          data: sortByDate(
+            averageByWeek(obj.data, props.yKey, props.timestampKey)
+          ),
         }));
     } else {
       return props.chartData
         .filter((obj: ChartDataItem) => obj.data && obj.data.length)
         .map((obj: ChartDataItem) => ({
           id: obj.id,
-          data: obj.data.map((dataobj: any) =>
-            mapScatterPlotData(dataobj, xKey.key)
-          ),
+          data: obj.data
+            .filter(
+              (dataObj: any) => dataObj[xKey.key] || dataObj[xKey.key] === 0
+            )
+            .map((dataobj: any) => mapScatterPlotData(dataobj, xKey.key)),
         }));
     }
-  }, [dateOption, xKey.plot, xKey.key, props.chartData, props.yKey]);
+  }, [
+    dateOption,
+    xKey.plot,
+    xKey.key,
+    props.chartData,
+    props.yKey,
+    props.timestampKey,
+  ]);
 
   const xLegend: string = xKey.plot === "line" ? dateOption : xKey.legend;
   const xScaleType: XScaleOption =

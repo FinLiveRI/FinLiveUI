@@ -1,7 +1,9 @@
 import { createContext, ReactChild, useState } from "react";
+import { Organization } from "../utils/types";
 
 export type UserConfig = {
   farmid?: string;
+  organization?: Organization;
 };
 
 type UserConfigProviderProps = {

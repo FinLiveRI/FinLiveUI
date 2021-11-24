@@ -67,8 +67,8 @@ const GroupSearchForm = (props: GroupSearchFormProps): JSX.Element => {
     props.onSearch({
       calvingnumber,
       farmid,
-      startDate: startDate?.format("YYYY-MM-DD"),
-      endDate: endDate?.format("YYYY-MM-DD"),
+      begin: startDate?.format("YYYY-MM-DD"),
+      end: endDate?.format("YYYY-MM-DD"),
     });
 
   const validateDates = (): boolean =>
