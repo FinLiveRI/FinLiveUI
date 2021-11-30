@@ -5,7 +5,7 @@ import { Button, Grid, MenuItem, Select, TextField } from "@material-ui/core";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { CloudDownload, Search } from "@material-ui/icons";
 import { DateRangePicker, Spinner } from "../../components";
-import { GroupDataQuery } from "../../api/group";
+import { downloadGroupData, GroupDataQuery } from "../../api/group";
 import { useUserConfig, useFarms, Farm } from "../../hooks";
 
 type GroupSearchFormProps = {
@@ -67,6 +67,14 @@ const GroupSearchForm = (props: GroupSearchFormProps): JSX.Element => {
 
   const handleSearch = () =>
     props.onSearch({
+      calvingnumber,
+      farmid,
+      begin: startDate?.format("YYYY-MM-DD") || "",
+      end: endDate?.format("YYYY-MM-DD") || "",
+    });
+
+  const handleDownload = () =>
+    downloadGroupData({
       calvingnumber,
       farmid,
       begin: startDate?.format("YYYY-MM-DD") || "",
@@ -186,6 +194,7 @@ const GroupSearchForm = (props: GroupSearchFormProps): JSX.Element => {
                 disabled={
                   !calvingnumber ||
                   !validateInt(calvingnumber) ||
+                  !farmid ||
                   !validateDates()
                 }
                 startIcon={<Search />}
@@ -204,10 +213,11 @@ const GroupSearchForm = (props: GroupSearchFormProps): JSX.Element => {
                 disabled={
                   !calvingnumber ||
                   !validateInt(calvingnumber) ||
+                  !farmid ||
                   !validateDates()
                 }
                 startIcon={<CloudDownload />}
-                onClick={() => null}
+                onClick={handleDownload}
               >
                 <FormattedMessage
                   description="Download CSV Button label"

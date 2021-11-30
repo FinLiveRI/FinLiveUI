@@ -13,8 +13,14 @@ import {
 import { useGroupData } from "../../hooks";
 import { ReactComponent as GroupIcon } from "../../assets/icons/group.svg";
 import GroupSearchForm from "./GroupSearchForm";
-import { Animal, xKeyObj } from "../../utils/types";
+import { Animal, GroupChart, xKeyObj } from "../../utils/types";
 import { GroupDataQuery } from "../../api/group";
+
+type GroupChartResponse = {
+  data: GroupChart | null;
+  isLoading: boolean;
+  error: any;
+};
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -48,7 +54,7 @@ const GroupView: FC = () => {
   });
   const [showError, setShowError] = useState<boolean>(false);
 
-  const { data, isLoading, error } = useGroupData(query);
+  const { data, isLoading, error }: GroupChartResponse = useGroupData(query);
 
   useEffect(() => {
     if (error) setShowError(true);
@@ -152,6 +158,7 @@ const GroupView: FC = () => {
         container
         direction="row"
         justifyContent="space-evenly"
+        alignItems="flex-start"
         spacing={2}
         className={classes.headerPanel}
       >
@@ -172,7 +179,7 @@ const GroupView: FC = () => {
         </Grid>
         <Grid item xs={false} lg={false} xl={1} />
         <Grid item container alignItems="center" xs={10} lg={4} xl={4}>
-          {data && data.info && !isLoading && !error && (
+          {data && data.animal && !isLoading && !error && (
             <InfoBox
               data={data.animal.reduce(
                 (dataObj: any, animal: Animal) => ({
@@ -181,8 +188,8 @@ const GroupView: FC = () => {
                 }),
                 {}
               )}
-              hiddenKeys={data.info
-                .map((animal: Animal) => animal.animalid)
+              hiddenKeys={data.animal
+                .map((animal: Animal) => String(animal.animalid))
                 .filter((animal: any, index: number) => index > 1)}
             />
           )}

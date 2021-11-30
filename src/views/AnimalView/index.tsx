@@ -159,6 +159,7 @@ const AnimalView: FC = () => {
         container
         direction="row"
         justifyContent="space-evenly"
+        alignItems="flex-start"
         spacing={2}
         className={classes.headerPanel}
       >

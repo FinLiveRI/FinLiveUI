@@ -82,3 +82,11 @@ export type AnimalChart = {
   feed: Array<Feed>;
   milk: Array<Milk>;
 };
+
+export type GroupChart = {
+  animal: Array<Animal>;
+  duration: Array<FeedDuration>;
+  weight: Array<Weight>;
+  feed: Array<Feed>;
+  milk: Array<Milk>;
+};

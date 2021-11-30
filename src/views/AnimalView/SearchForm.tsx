@@ -5,7 +5,7 @@ import { Button, Grid, MenuItem, Select, TextField } from "@material-ui/core";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { CloudDownload, Search } from "@material-ui/icons";
 import { DateRangePicker, Spinner } from "../../components";
-import { AnimalDataQuery } from "../../api/animal";
+import { AnimalDataQuery, downloadAnimalData } from "../../api/animal";
 import { useUserConfig, useFarms, Farm } from "../../hooks";
 
 type SearchFormProps = {
@@ -64,6 +64,14 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
 
   const handleSearch = () =>
     props.onSearch({
+      animalid: id,
+      farmid,
+      begin: startDate?.format("YYYY-MM-DD") || "",
+      end: endDate?.format("YYYY-MM-DD") || "",
+    });
+
+  const handleDownload = () =>
+    downloadAnimalData({
       animalid: id,
       farmid,
       begin: startDate?.format("YYYY-MM-DD") || "",
@@ -193,7 +201,7 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
                 variant="contained"
                 disabled={!id || !farmid || !validateDates()}
                 startIcon={<CloudDownload />}
-                onClick={() => null}
+                onClick={handleDownload}
               >
                 <FormattedMessage
                   description="Download CSV Button label"
