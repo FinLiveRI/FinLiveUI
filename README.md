@@ -8,6 +8,11 @@ REACT_APP_API=http://127.0.0.1/api/v1
 
 Replace the URL with the actual base API URL.
 
+If running the backend and frontend from the same host in development, api calls can be proxied to avoid CORS errors. Add the following line to package.json:
+"proxy": "http://localhost:4000",
+
+Replace the host and port to point to the backend. If using same host locally and a proxy, REACT_APP_URL in the format "/api/v1" should be sufficient for the .env file.
+
 ## Available Scripts
 
 In the project directory, you can run:
