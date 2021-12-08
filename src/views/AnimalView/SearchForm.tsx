@@ -6,7 +6,7 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { CloudDownload, Search } from "@material-ui/icons";
 import { DateRangePicker, Spinner } from "../../components";
 import { AnimalDataQuery } from "../../api/animal";
-import { useUserConfig, useFarms, Farm } from "../../hooks";
+import { useUserConfig, useFarms, useAnimals, Farm, Animal} from "../../hooks";
 
 type SearchFormProps = {
   onSearch: (data: AnimalDataQuery) => void;
@@ -51,15 +51,18 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
   const farmData = useFarms();
   const farms: Array<Farm> = farmData.data;
 
-  const handleIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setId(event.target.value);
-  };
-
+  const animalData = useAnimals();
+  const animals : Array<Animal> = animalData.data;
+  
   const handleFarmChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setFarmId(event.target.value as string);
     if (!userConfig.farmid || userConfig.farmid !== event.target.value) {
       updateUserConfig({ ...userConfig, farmid: event.target.value });
     }
+  };
+
+  const handleAnimalChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setId(event.target.value as string);
   };
 
   const handleSearch = () =>
@@ -94,17 +97,35 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
           xl={12}
         >
           <Grid item xs={12} lg={4} xl={5}>
-            <TextField
+          {animals && !animalData.isLoading ? (
+            <Select
               value={id}
               required
               fullWidth
+              displayEmpty={!id}
+              onChange={handleAnimalChange}
               variant="outlined"
-              onChange={handleIdChange}
-              label={intl.formatMessage({
+              aria-label={intl.formatMessage({
                 description: "Animal SearchInput label",
                 defaultMessage: "Animal ID",
               })}
-            />
+            >
+              {!id && (
+                  <MenuItem value="">{`<${intl.formatMessage({
+                    description: "Empty value for animal selection",
+                    defaultMessage: "Select Animal",
+                  })}> *`}</MenuItem>
+                )}
+              {animals
+              .map((animal: Animal, index: number) => (
+                <MenuItem key={index} value={animal.animalid}>
+                  {`${animal.animalid} ${animal.name} ${animal.euid}`}
+                </MenuItem>
+              ))}
+            </Select>
+          ) : ( 
+            <Spinner withText={false} size={30} />
+          )}
           </Grid>
           <Grid
             item

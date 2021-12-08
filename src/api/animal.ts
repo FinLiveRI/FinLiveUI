@@ -1,8 +1,9 @@
 import http from "./reqWithAuth";
 import useMock from "../mock/animal/api";
-import { getStoredOrgId } from "../utils/helpers";
+import { getStoredOrgId, getStoredFarmId} from "../utils/helpers";
 
 const url = "/charts/animalchart";
+const animal_url = "/animal"
 
 export type AnimalDataQuery = {
   animalid: string;
@@ -20,3 +21,6 @@ const getAnimal = (query: AnimalDataQuery) => {
 export const getAnimalData = !process.env.API
   ? getAnimal
   : async (query: AnimalDataQuery) => useMock(query);
+
+  export const getAnimals = () =>
+    http.get(animal_url, { headers: {"x-org": getStoredOrgId(), "x-farm": getStoredFarmId()} });

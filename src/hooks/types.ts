@@ -8,3 +8,10 @@ export type Farm = {
   farmid: number;
   name: string;
 };
+
+export type Animal = {
+  animalid: number;
+  euid : string;
+  name: string;
+  farmid: string;
+};

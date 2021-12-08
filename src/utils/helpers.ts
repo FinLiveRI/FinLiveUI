@@ -29,6 +29,15 @@ export const getStoredOrgId = () => {
   return organization || null;
 };
 
+export const getStoredFarmId = () => {
+  const userConfig: string | null = localStorage.getItem("userConfig");
+  const obj: UserConfig | null = userConfig ? JSON.parse(userConfig) : null;
+  const farmid: string| null =
+    obj?.farmid || null;
+  console.log(farmid)
+  return farmid || null;
+};
+
 export const humanFileSize = (size: number): string => {
   const unit: number = Math.floor(Math.log(size) / Math.log(1000));
   return (
