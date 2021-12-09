@@ -48,7 +48,7 @@ const AnimalView: FC = () => {
   const classes = useStyles();
   const intl = useIntl();
   const [query, setQuery] = useState<AnimalDataQuery>({
-    animalid: "",
+    euid: "",
     farmid: "",
     begin: "",
     end: "",

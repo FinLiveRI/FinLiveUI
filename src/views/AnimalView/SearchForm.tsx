@@ -67,7 +67,7 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
 
   const handleSearch = () =>
     props.onSearch({
-      animalid: id,
+      euid: id,
       farmid,
       begin: startDate?.format("YYYY-MM-DD") || "",
       end: endDate?.format("YYYY-MM-DD") || "",
@@ -75,7 +75,7 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
 
   const handleDownload = () =>
     downloadAnimalData({
-      animalid: id,
+      euid: id,
       farmid,
       begin: startDate?.format("YYYY-MM-DD") || "",
       end: endDate?.format("YYYY-MM-DD") || "",
@@ -126,7 +126,7 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
                 )}
               {animals
               .map((animal: Animal, index: number) => (
-                <MenuItem key={index} value={animal.animalid}>
+                <MenuItem key={index} value={animal.euid}>
                   {`${animal.animalid} ${animal.name} ${animal.euid}`}
                 </MenuItem>
               ))}

@@ -189,7 +189,7 @@ const GroupView: FC = () => {
                 {}
               )}
               hiddenKeys={data.animal
-                .map((animal: Animal) => String(animal.animalid))
+                .map((animal: Animal) => String(animal.euid))
                 .filter((animal: any, index: number) => index > 1)}
             />
           )}

@@ -8,7 +8,7 @@ const animal_url = "/animal"
 const downloadUrl = "/charts/animalchart/download";
 
 export type AnimalDataQuery = {
-  animalid: string;
+  euid: string;
   farmid: string;
   begin: string;
   end: string;
@@ -27,7 +27,7 @@ const downloadAnimalCsv = (query: AnimalDataQuery) => {
       headers: { "x-filter": JSON.stringify(query), "x-org": getStoredOrgId() },
     })
     .then((response) => {
-      fileDownload(response.data, `${query.animalid}.csv`);
+      fileDownload(response.data, `${query.euid}.csv`);
     });
 };
 

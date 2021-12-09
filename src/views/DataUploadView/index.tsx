@@ -36,7 +36,7 @@ const DataUploadView: FC = () => {
     setFiles((prev) => [...prev, ...newFiles]);
     setFileTypes((prev) => [
       ...prev,
-      ...newFiles.map((file: FileWithPath) => "animal" as string),
+      ...newFiles.map((file: FileWithPath) => "greenfeed" as string),
     ]);
   };
 

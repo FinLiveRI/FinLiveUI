@@ -60,7 +60,7 @@ export type FeedDuration = {
 };
 
 export type Weight = {
-  animalid: number;
+  euid: string;
   timestamp: string;
   weight: number;
   automaticmeasurement: boolean;
